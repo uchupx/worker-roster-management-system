@@ -10,7 +10,7 @@ build/main: cmd/main.go generated
 clean:
 	rm -rf generated
 
-init: clean 
+init: clean generated
 	go mod tidy
 	go mod vendor
 # init: clean generate
@@ -30,7 +30,7 @@ init: clean
 generated: api.yml
 	@echo "Generating files..."
 	mkdir generated || true
-	oapi-codegen --package generated -generate types,server,spec $< > generated/api.gen.go
+	oapi-codegen -generate types,server,spec -o ./generated/api.gen.go -package api api.yml
 
 # INTERFACES_GO_FILES := $(shell find repository -name "interfaces.go")
 # INTERFACES_GEN_GO_FILES := $(INTERFACES_GO_FILES:%.go=%.mock.gen.go)
