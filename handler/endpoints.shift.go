@@ -2,7 +2,6 @@ package handler
 
 import (
 	"context"
-	"fmt"
 	"time"
 
 	echo "github.com/labstack/echo/v4"
@@ -49,7 +48,7 @@ func (s Server) GetShiftsMonths(ctx echo.Context, params api.GetShiftsMonthsPara
 		dateStart = time.Date(date.Year(), date.Month(), 1, 0, 0, 0, 0, date.Location())
 		dateEnd = dateStart.AddDate(0, 1, 0).Add(-time.Second)
 	}
-fmt.Println(dateStart, dateEnd)
+
 	shifts, err := s.shiftService.FindShiftByDate(ctx.Request().Context(), dateStart, dateEnd)
 	if err != nil {
 		return s.responseError(ctx, err)

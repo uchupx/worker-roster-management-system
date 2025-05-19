@@ -4,8 +4,12 @@ FROM golang:1.24-alpine
 # Install required dependencies for CGO and SQLite3
 RUN apk add --no-cache gcc musl-dev sqlite-dev make
 
-# Enable CGO and set the target OS/architecture
+ARG PORT
+ARG CONFIG_PATH
+
 ENV CGO_ENABLED=1
+ENV PORT=${PORT}
+ENV CONFIG_PATH=${CONFIG_PATH}
 
 WORKDIR /app
 
@@ -16,9 +20,6 @@ RUN go mod download
 # Install required Go tools
 RUN go install github.com/deepmap/oapi-codegen/cmd/oapi-codegen@latest
 RUN go install github.com/mattn/go-sqlite3
-
-# Set configuration path
-ENV CONFIG_PATH=/app/.config
 
 # Copy application files
 COPY . /app
