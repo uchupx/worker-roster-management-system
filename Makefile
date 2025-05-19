@@ -13,29 +13,15 @@ clean:
 init: clean generated
 	go mod tidy
 	go mod vendor
-# init: clean generate
-# 	go mod tidy
-# 	go mod vendor
 
-# test:
-#         go clean -testcache
-#         go test -short -coverprofile coverage.out -short -v ./...
-#
-# test_api:
-#         go clean -testcache
-#         go test ./tests/...
-#
-# generate: generated generate_mocks
+config:
+	@echo "Generating config..."
+	mkdir -p ./config
+	cp .env.example ./config/.env
 
 generated: api.yml
 	@echo "Generating files..."
 	mkdir generated || true
 	oapi-codegen -generate types,server,spec -o ./generated/api.gen.go -package api api.yml
 
-# INTERFACES_GO_FILES := $(shell find repository -name "interfaces.go")
-# INTERFACES_GEN_GO_FILES := $(INTERFACES_GO_FILES:%.go=%.mock.gen.go)
 
-# generate_mocks: $(INTERFACES_GEN_GO_FILES)
-# $(INTERFACES_GEN_GO_FILES): %.mock.gen.go: %.go
-#         @echo "Generating mocks $@ for $<"
-#         mockgen -source=$< -destination=$@ -package=$(shell basename $(dir $<))
